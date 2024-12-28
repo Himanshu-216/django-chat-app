@@ -21,12 +21,12 @@
                 x-transition:enter-start="opacity-0 -translate-y-5 scale-90"
                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"
                 >
-                    {% comment %} <ul class="hoverlist [&>li>a]:justify-end">
+                    <ul class="hoverlist [&>li>a]:justify-end">
                         <li><a href="{% url 'profile' %}">My Profile</a></li>
                         <li><a href="{% url 'profile-edit' %}">Edit Profile</a></li>
-                        <li><a href="{% url 'profile-settings' %}">Settings</a></li>
-                        <li><a href="{% url 'account_logout' %}">Log Out</a></li>
-                    </ul> {% endcomment %}
+                        {% comment %} <li><a href="{% url 'profile-settings' %}">Settings</a></li>
+                        <li><a href="{% url 'account_logout' %}">Log Out</a></li> {% endcomment %}
+                    </ul> 
                 </div>
             </li>
             
