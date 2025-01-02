@@ -91,7 +91,16 @@ WSGI_APPLICATION = 'a_core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-https://github.com/Himanshu-216/django-chat-app.git
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DATABASE_NAME'),  # Replace with your database name
+        'USER': os.getenv('DATABASE_USERNAME'),  # Replace with your MySQL username
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),  # Replace with your MySQL password
+        'HOST': os.getenv('DATABASE_HOST'),  # Replace with your database host, '%' in MySQL translates to 'localhost' or server IP
+        'PORT': os.getenv('DATABASE_PORT'),  # Default MySQL port
+    }
+}
 
 
 # Password validation
