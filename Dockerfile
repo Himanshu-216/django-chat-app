@@ -5,11 +5,12 @@ RUN apt update && apt install -y \
     default-libmysqlclient-dev \
     build-essential
 
-WORKDIR /app
+WORKDIR ./app
 
 COPY requirement.txt ./
 RUN pip install --no-cache-dir -r requirement.txt
 
 COPY . .
+
 
 

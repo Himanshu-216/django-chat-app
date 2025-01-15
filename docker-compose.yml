@@ -1,17 +1,36 @@
 version: '3.8'
 services:
+  django_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: django_app_container
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    command: >
+      sh -c "python manage.py migrate &&
+            python manage.py runserver 0.0.0.0:8000"
+
   mysql:
     image: mysql:latest
     container_name: mysql_container
-    # restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
       MYSQL_DATABASE: ${DATABASE_NAME}
-      
     ports:
       - "3306:3306"
     volumes:
       - django_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "--silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   django_mysql_data:
