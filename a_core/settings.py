@@ -100,7 +100,7 @@ DATABASES = {
         'NAME': os.getenv('DATABASE_NAME'),  # Replace with your database name
         'USER': os.getenv('DATABASE_USERNAME'),  # Replace with your MySQL username
         'PASSWORD': os.getenv('DATABASE_PASSWORD'),  # Replace with your MySQL password
-        'HOST': os.getenv('DATABASE_HOST'),  # Replace with your database host, '%' in MySQL translates to 'localhost' or server IP
+        'HOST': 'localhost',  # Replace with your database host, '%' in MySQL translates to 'localhost' or server IP
         'PORT': os.getenv('DATABASE_PORT'),  # Default MySQL port
     }
 }
