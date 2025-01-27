@@ -1,0 +1,19 @@
+name: Django CI/CD Workflow
+
+# triggers for our workflow
+on:
+  
+  push:
+    branches:
+      - dev
+      - master
+
+
+# three job definition
+jobs:
+  health-check-job: # health check job for testing and code formatting check
+    runs-on: ubuntu-latest # os for running the job
+    
+    steps:
+      - name: Checkout code # checking our the code at current commit that triggers the workflow
+        uses: actions/checkout@v4
