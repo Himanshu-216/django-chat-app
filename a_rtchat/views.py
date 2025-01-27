@@ -31,7 +31,7 @@ def chat_view(request, chatroom_name='public-chat'):
     #             messages.warning(request, 'You need to verify your email to join the chat!')
     #             return redirect('profile-settings')
     
-    if request.htmx or request.method == 'POST':
+    if request.htmx:
         form = ChatmessageCreateForm(request.POST)
         if form.is_valid:
             message = form.save(commit=False)
