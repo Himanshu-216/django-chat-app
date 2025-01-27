@@ -48,6 +48,14 @@ resource "aws_security_group" "ec2_sg" {
     cidr_blocks = ["0.0.0.0/0"] # Replace with specific CIDR if needed
   }
 
+  ingress {
+    description = "Allow 8000"
+    from_port   = 8000
+    to_port     = 8000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # Replace with specific CIDR if needed
+  }
+
   egress {
     description = "Allow all outbound traffic"
     from_port   = 0
@@ -61,10 +69,19 @@ resource "aws_security_group" "ec2_sg" {
   }
 }
 
+# Elastic IP resource
+resource "aws_eip" "ec2_eip" {
+  vpc = true
+
+  tags = {
+    Name = "MyElasticIP"
+  }
+}
+
 # EC2 instance
 resource "aws_instance" "web_server" {
   ami           = "ami-00bb6a80f01f03502" # Replace with a valid AMI ID
-  instance_type = "t2.micro"
+  instance_type = "t2.small"
   key_name      = aws_key_pair.ec2_key.key_name
   subnet_id     = "subnet-09d003c65b4701d03"
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
@@ -72,9 +89,16 @@ resource "aws_instance" "web_server" {
   tags = {
     Name = "MyEC2Instance"
   }
+  depends_on = [aws_eip.ec2_eip]
 }
 
-# Output the public IP of the instance
-output "instance_public_ip" {
-  value = aws_instance.web_server.public_ip
+# Associate Elastic IP with the EC2 instance
+resource "aws_eip_association" "ec2_eip_assoc" {
+  instance_id   = aws_instance.web_server.id
+  allocation_id = aws_eip.ec2_eip.id
+}
+
+# Output the Elastic IP address
+output "instance_elastic_ip" {
+  value = aws_eip.ec2_eip.public_ip
 }
