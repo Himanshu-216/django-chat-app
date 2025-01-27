@@ -11,8 +11,8 @@ terraform {
 
 # Provider configuration
 provider "aws" {
-  region  = "us-east-1"
-  profile = "default" # Or your profile name
+  region  = "ap-south-1"
+  profile = "personal-iam" # Or your profile name
 }
 
 # Key pair for SSH access
@@ -24,15 +24,6 @@ resource "aws_key_pair" "ec2_key" {
 # Data block to fetch the default VPC
 data "aws_vpc" "default" {
   default = true
-}
-
-# Data block to fetch a subnet from the default VPC
-data "aws_subnet_ids" "default" {
-  vpc_id = data.aws_vpc.default.id
-}
-
-data "aws_subnet" "selected" {
-  id = tolist(data.aws_subnet_ids.default.ids)[0] # Select the first subnet
 }
 
 # Security group to allow SSH and HTTP access
@@ -72,10 +63,10 @@ resource "aws_security_group" "ec2_sg" {
 
 # EC2 instance
 resource "aws_instance" "web_server" {
-  ami           = "ami-04b4f1a9cf54c11d0" # Replace with a valid AMI ID
+  ami           = "ami-00bb6a80f01f03502" # Replace with a valid AMI ID
   instance_type = "t2.micro"
   key_name      = aws_key_pair.ec2_key.key_name
-  subnet_id     = data.aws_subnet.selected.id
+  subnet_id     = "subnet-09d003c65b4701d03"
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
 
   tags = {
