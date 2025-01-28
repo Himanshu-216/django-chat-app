@@ -49,9 +49,9 @@ resource "aws_security_group" "ec2_sg" {
   }
 
   ingress {
-    description = "Allow 8000"
-    from_port   = 8000
-    to_port     = 8000
+    description = "Allow HTTPs"
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"] # Replace with specific CIDR if needed
   }
