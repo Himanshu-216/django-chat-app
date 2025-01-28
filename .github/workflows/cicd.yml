@@ -18,12 +18,12 @@ jobs:
       - name: Checkout code # checking our the code at current commit that triggers the workflow
         uses: actions/checkout@v4
 
-      # - name: executing remote ssh commands using password
-      #   uses: appleboy/ssh-action@v1.2.0
-      #   with:
-      #     host: ${{ secrets.HOST }}
-      #     username: ${{ secrets.USER }}
-      #     key: ${{ secrets.PRIVATE_KEY }}
-      #     script: |
-      #       whoami
-      #       ls -al
+      - name: executing remote ssh commands 
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          script: |
+            cd /home/ubuntu/django-chat-app/
+            git pull origin master
