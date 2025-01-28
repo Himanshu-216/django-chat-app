@@ -1,6 +1,7 @@
 .env
 venv
 **/migrations/
+**/__pycache__/
 
 # Local Terraform configuration files
 *.tfstate
