@@ -8,14 +8,12 @@ on:
       - dev
       - master
 
-
-# three job definition
 jobs:
-  health-check-job: # health check job for testing and code formatting check
-    runs-on: ubuntu-latest # os for running the job
+  health-check-job: 
+    runs-on: ubuntu-latest 
     
     steps:
-      - name: Checkout code # checking our the code at current commit that triggers the workflow
+      - name: Checkout code 
         uses: actions/checkout@v4
 
       - name: executing remote ssh commands 

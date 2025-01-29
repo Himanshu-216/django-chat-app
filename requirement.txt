@@ -6,3 +6,8 @@ django-htmx
 python-dotenv
 mysqlclient
 shortuuid
+opentelemetry-sdk
+opentelemetry-instrumentation-django
+requests
+opentelemetry-api
+opentelemetry-exporter-otlp
