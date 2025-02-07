@@ -9,15 +9,16 @@ services:
       - .env
     ports:
       - "8000:8000"
-      - "9464:9464"
     depends_on:
+      otel-collector:
+        condition: service_started
       mysql:
         condition: service_healthy
     volumes:
       - .:/app
     healthcheck:
       test: ["CMD", "curl", "localhost:8000"]
-      interval: 10s
+      interval: 600s
       timeout: 5s
       retries: 5
     command: >
@@ -46,22 +47,35 @@ services:
       - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
     ports:
       - 1888:1888 # pprof extension
-      - 8888:8888 # Prometheus metrics exposed by the Collector
-      - 8889:8889 # Prometheus exporter metrics
       - 13133:13133 # health_check extension
       - 4317:4317 # OTLP gRPC receiver
       - 4318:4318 # OTLP http receiver
       - 55679:55679 # zpages extension
-    depends_on:
-      django_app:
-        condition: service_healthy
+  
+  tempo:
+    image: grafana/tempo:latest
+    container_name: tempo
+    user: "0:0" # Run as root to avoid permission issues
+    environment:
+      - TEMPO_STORAGE=local
+      - TEMPO_LOCAL_STORAGE_PATH=/var/lib/tempo
+    command: ["-config.file=/etc/tempo/tempo.yaml"]
+    volumes:
+      - ./tempo.yml:/etc/tempo/tempo.yaml
+      - tempo-data:/var/lib/tempo
+    restart: always
 
-  # prometheus:
-  #   image: prom/prometheus
-  #   volumes:
-  #     - "./prometheus.yml:/etc/prometheus/prometheus.yml"
-  #   ports:
-  #     - 9090:9090
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin  # Default password for Grafana
+    ports:
+      - "3000:3000"  # Grafana UI port
+    depends_on:
+      - tempo  # Ensure Tempo is up before Grafana
+    restart: always
 
 volumes:
   django_mysql_data:
+  tempo-data:
