@@ -16,6 +16,7 @@ from opentelemetry.trace.propagation.tracecontext import TraceContextTextMapProp
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
+from time import sleep
 
 tracer = trace.get_tracer(__name__)
 DjangoInstrumentor().instrument()

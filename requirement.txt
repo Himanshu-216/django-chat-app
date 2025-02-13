@@ -13,3 +13,4 @@ opentelemetry-exporter-prometheus
 opentelemetry-exporter-otlp
 opentelemetry-distro
 opentelemetry-instrumentation-django
+PyJWT
