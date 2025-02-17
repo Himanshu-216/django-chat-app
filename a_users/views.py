@@ -8,16 +8,30 @@ from django.contrib.auth.views import redirect_to_login
 from django.contrib import messages
 from .forms import *
 
+
+
+from opentelemetry import trace
+from opentelemetry.instrumentation.django import DjangoInstrumentor
+from opentelemetry.trace.propagation.tracecontext import TraceContextTextMapPropagator
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.models import User
+from time import sleep
+
+tracer = trace.get_tracer(__name__)
+DjangoInstrumentor().instrument()
+
 @login_required
 def profile_view(request, username=None):
-    if username:
-        profile = get_object_or_404(User, username=username).profile
-    else:
-        try:
-            profile = request.user.profile
-        except:
-            return redirect_to_login(request.get_full_path())
-    return render(request, 'a_users/profile.html', {"profile": profile})
+    with tracer.start_as_current_span("profile_view"):
+        if username:
+            profile = get_object_or_404(User, username=username).profile
+        else:
+            try:
+                profile = request.user.profile
+            except:
+                return redirect_to_login(request.get_full_path())
+        return render(request, 'a_users/profile.html', {"profile": profile})
 
 @login_required
 def profile_edit_view(request):

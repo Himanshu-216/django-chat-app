@@ -81,7 +81,7 @@ resource "aws_eip" "ec2_eip" {
 # EC2 instance
 resource "aws_instance" "web_server" {
   ami           = "ami-00bb6a80f01f03502" # Replace with a valid AMI ID
-  instance_type = "t2.small"
+  instance_type = "t2.micro"
   key_name      = aws_key_pair.ec2_key.key_name
   subnet_id     = "subnet-09d003c65b4701d03"
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]

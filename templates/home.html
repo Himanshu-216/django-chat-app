@@ -1,7 +1,9 @@
 {% extends 'layouts/blank.html' %}
+{% load socialaccount %} 
 
 {% block content %} 
     <div class="max-w-4xl mx-auto px-8 py-24">
         <h1>home</h1>
+        <a href="{% provider_login_url 'google' %}">Login with Google</a>
     </div>
 {% endblock %}
